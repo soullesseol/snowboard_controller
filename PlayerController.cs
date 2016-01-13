@@ -12,12 +12,6 @@ public class PlayerController : MonoBehaviour
         LEFT
     }
 
-    public enum PowerUp
-    {
-        NONE,
-        SHIELD,
-        MULT
-    }
 
     public float speed;//Rider default speed
     public float handling;//Craft default handling
@@ -39,7 +33,6 @@ public class PlayerController : MonoBehaviour
 
     private bool _hasCrashed;//Player crash state flag
     private bool _hasEnergy;
-    private float _powerUpTimer;//Power up active timer
     private float _currentSpeed;//In-game player speed value
     private float _currentHandling;//In-game player handling value
     private float _currentAltitude;//In-game player altitude value
@@ -53,7 +46,6 @@ public class PlayerController : MonoBehaviour
 
     private MoveDirection _dir; //Player movement direction (Required for input manager)
 	private AnimationManager _anim;//Player animation manager
-    private PowerUp _powerUp;//Collected power up
     private GameManager _gm;//Game central manager
     private Rigidbody _rigidbody;//Player rigidbody component
 
@@ -70,11 +62,6 @@ public class PlayerController : MonoBehaviour
                 _gm.State = GameManager.GameState.SUMMARY;
                 //Stop player
                 _rigidbody.velocity = Vector3.zero;
-                break;
-
-            case "Shield":
-                _powerUp = PowerUp.SHIELD;
-                _powerUpTimer = shieldTime;
                 break;
         }
     }
@@ -120,8 +107,6 @@ public class PlayerController : MonoBehaviour
         _hasCrashed = false;
         //Player has energy
         _hasEnergy = true;
-        //Reset collected power up
-        _powerUp = PowerUp.NONE;
         //Set initial speed
         _currentSpeed = speed;
         //Set initial altitude
@@ -152,25 +137,6 @@ public class PlayerController : MonoBehaviour
 
         if (!_hasCrashed && _hasEnergy)
         {
-            //PowerUp effects
-            switch (_powerUp)
-            {
-                case PowerUp.SHIELD:
-                    //Reset shield
-                    if (_powerUpTimer <= 0)
-                    {
-                        _powerUp = PowerUp.NONE;
-                    }
-                    break;
-            }
-
-            //Count powerup timer
-            if (_powerUpTimer > 0)
-            {
-                //Count timer
-                _powerUpTimer -= Time.deltaTime;
-            }
-
             //Check player direction
             switch (_dir)
             {
@@ -256,8 +222,6 @@ public class PlayerController : MonoBehaviour
         transform.position = pos;
         //Reset player rotation
         transform.localEulerAngles = Vector3.zero;
-        //Reset collected power up
-        _powerUp = PowerUp.NONE;
         //Reset crash flag
         _hasCrashed = false;
         //Player has energy
