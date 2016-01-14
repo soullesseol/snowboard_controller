@@ -38,7 +38,6 @@ public class PlayerController : MonoBehaviour
 	float _terrainAngle;//Current mountain angle
 
     MoveDirection _dir; //Player movement direction (Required for input manager)
-	AnimationManager _anim;//Player animation manager
     Rigidbody _rigidbody;//Player rigidbody component
 
     // Use this for initialization
@@ -97,16 +96,34 @@ public class PlayerController : MonoBehaviour
 
             case MoveDirection.RIGHT:
                 //Turn player
-                Turn();
+                _currentTurn += turnSpeed * 10f * Time.deltaTime;
+                //Clamp roll value
+                _currentTurn = Mathf.Clamp(_currentTurn, -turnLimit, turnLimit);
+                //Assign rotation amount
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, _currentTurn, transform.localEulerAngles.z);
+
                 //Roll player
-                Roll();
+                _currentRoll += rollSpeed * 10f * Time.deltaTime;
+                //Clamp roll value
+                _currentRoll = Mathf.Clamp(_currentRoll, -rollLimit, rollLimit);
+                //Assign rotation amount
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, _currentRoll);
                 break;
 
             case MoveDirection.LEFT:
                 //Turn player
-                Turn();
+                _currentTurn -= turnSpeed * 10f * Time.deltaTime;
+                //Clamp roll value
+                _currentTurn = Mathf.Clamp(_currentTurn, -turnLimit, turnLimit);
+                //Assign rotation amount
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, _currentTurn, transform.localEulerAngles.z);
+
                 //Roll player
-                Roll();
+                _currentRoll -= rollSpeed * 10f * Time.deltaTime;
+                //Clamp roll value
+                _currentRoll = Mathf.Clamp(_currentRoll, -rollLimit, rollLimit);
+                //Assign rotation amount
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, _currentRoll);
                 break;
         }
 
@@ -147,46 +164,6 @@ public class PlayerController : MonoBehaviour
 		Debug.DrawRay (transform.position, transform.forward , Color.green );
     }
 
-    public void Roll()
-    {
-        switch (_dir)
-        {
-            case MoveDirection.LEFT:
-
-                _currentRoll += rollSpeed * 10f * Time.deltaTime;
-                break;
-
-            case MoveDirection.RIGHT:
-
-                _currentRoll -= rollSpeed * 10f * Time.deltaTime;
-                break;
-        }
-        //Clamp roll value
-        _currentRoll = Mathf.Clamp(_currentRoll, -rollLimit, rollLimit);
-        //Assign rotation amount
-        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, _currentRoll);
-    }
-
-    public void Turn()
-    {
-        switch (_dir)
-        {
-            case MoveDirection.LEFT:
-
-                _currentTurn -= turnSpeed * 10f * Time.deltaTime;
-                break;
-
-            case MoveDirection.RIGHT:
-
-                _currentTurn += turnSpeed * 10f * Time.deltaTime;
-                break;
-        }
-        //Clamp roll value
-        _currentTurn = Mathf.Clamp(_currentTurn, -turnLimit, turnLimit);
-        //Assign rotation amount
-        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, _currentTurn, transform.localEulerAngles.z);
-    }
-
 	private RaycastHit BoardCollision(Vector3 castPos, Vector3 direction, float length, LayerMask layer, string tag)
 	{
 		//Hit data output
@@ -203,12 +180,6 @@ public class PlayerController : MonoBehaviour
 		}
 
 		return hit;
-	}
-
-	//Mountain angle setter method
-	public float MountainAngle
-	{
-		set { _terrainAngle = value; }
 	}
 
     //Player direction get/set method

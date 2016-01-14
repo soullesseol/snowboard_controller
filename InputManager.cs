@@ -5,7 +5,7 @@ public class InputManager : MonoBehaviour
 {
     public bool inverse;//Control inverse flag
     private PlayerController _player; //Player controller script
-
+    
     void Start()
     {
         //Get player controller
