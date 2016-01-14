@@ -164,7 +164,7 @@ public class PlayerController : MonoBehaviour
 		Debug.DrawRay (transform.position, transform.forward , Color.green );
     }
 
-	private RaycastHit BoardCollision(Vector3 castPos, Vector3 direction, float length, LayerMask layer, string tag)
+	RaycastHit BoardCollision(Vector3 castPos, Vector3 direction, float length, LayerMask layer, string tag)
 	{
 		//Hit data output
 		RaycastHit hit;
