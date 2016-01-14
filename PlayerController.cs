@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Rigidbody), typeof(InputManager), typeof(AnimationManager))]
+[RequireComponent(typeof(Rigidbody), typeof(InputManager))]
 public class PlayerController : MonoBehaviour
 {
     public enum MoveDirection
@@ -43,10 +43,10 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //Add rotation contsraints
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
         //Get box collider reference
         _rigidbody = GetComponent<Rigidbody>();
+        //Add rotation contsraints
+        _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         //Set initial speed
         _currentSpeed = speed;
         //Set initial altitude
