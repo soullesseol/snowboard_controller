@@ -5,13 +5,11 @@ public class InputManager : MonoBehaviour
 {
     public bool inverse;//Control inverse flag
     private PlayerController _player; //Player controller script
-    private SmoothFollow _camera; //Main camera controller script
 
     void Start()
     {
         //Get player controller
         _player = GetComponent<PlayerController>();
-        _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<SmoothFollow>();
     }
 
     // Update is called once per frame
@@ -32,8 +30,6 @@ public class InputManager : MonoBehaviour
                     //Move right
                     _player.Direction = PlayerController.MoveDirection.RIGHT;
                 }
-                //Rotate camera
-                _camera.Rotate(_player.Direction);
             }
             else if (touch.position.x > Screen.width / 2)
             {
@@ -47,8 +43,6 @@ public class InputManager : MonoBehaviour
                     //Move left
                     _player.Direction = PlayerController.MoveDirection.LEFT;
                 }
-                //Rotate camera
-                _camera.Rotate(_player.Direction);
             }
         }
         else
@@ -56,8 +50,6 @@ public class InputManager : MonoBehaviour
         {
             //Move straight
             _player.Direction = PlayerController.MoveDirection.STRAGHT;
-            //Rotate camera
-            _camera.Rotate(_player.Direction);
         }
     }
 }
